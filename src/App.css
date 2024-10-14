@@ -1,0 +1,40 @@
+
+
+
+
+*{
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+.main{
+
+    height: 100vh;
+
+   
+   
+}
+
+.components-wrapper{
+    border-radius: 15px;
+    background-color: #afd7de;
+ 
+}
+.swap{
+    background: #2fd0e5;
+    position: absolute;
+    top: 270px;
+    left: 655px;
+    cursor: pointer;
+    transition: 2s;
+}
+
+.swap:hover{
+    border: 1px solid grey;
+   transition: 2s;
+}
+button{
+    border-radius: 5px;
+    border: none;
+}

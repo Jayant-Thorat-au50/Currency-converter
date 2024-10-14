@@ -1,0 +1,9 @@
+
+
+.inputBox{
+    border-radius: 9px;
+    background-color: #bc97c5;
+}
+input,select{
+    border: none;
+}
