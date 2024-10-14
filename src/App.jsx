@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import InputBox from "./components/InputBox";
 import UseCurrencyInfo from "./customHooks/UseCurrencyInfo";
-import useCurrencyInfo from "./customHooks/UseCurrencyInfo";
 
 function App() {
   // getting all the state variables
@@ -12,28 +11,15 @@ function App() {
     to: "INR",
     convertedAmount: 0,
   });
-  
- let FromOptions=[]
 
- let ToOptions = []
-
+  // getting the for currency relation with input currency
+  // for both the currencies
   const FromCurr = UseCurrencyInfo(amountState.from);
   const ToCurr = UseCurrencyInfo(amountState.to);
 
-
-  
-
-      FromOptions = Object.keys(FromCurr)
-      ToOptions = Object.keys(ToCurr)
-
-
-  // setAmountState((state)=>({
-  //   ...state,
-  //   curencyOptionsFrom:FromOptions,
-  //   curencyOptionsTo:ToOptions
-  // }))
-
-
+  //extracting their keys in a array
+  const FromOptions = Object.keys(FromCurr);
+  const ToOptions = Object.keys(ToCurr);
 
   // const swap = () => {
   //   setFrom(to);
@@ -42,16 +28,12 @@ function App() {
   //   setAmount(convertedAmount);
   // };
 
+  // convert function that converts from "From" to "To"
   const convert = () => {
-   
-    
-    
     setAmountState((state) => ({
       ...state,
       convertedAmount: amountState.amount * FromCurr[amountState.to],
     }));
-
-    // setConvertedAmount(amount * currecyInfo[to]);
   };
 
   return (
