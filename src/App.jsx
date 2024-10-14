@@ -1,49 +1,64 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import InputBox from "./components/InputBox";
-// import UseCurrencyInfo from "./customHooks/UseCurrencyInfo";
+import UseCurrencyInfo from "./customHooks/UseCurrencyInfo";
+import useCurrencyInfo from "./customHooks/UseCurrencyInfo";
 
 function App() {
-  const [amount, setAmount] = useState(0);
-  const [from, setFrom] = useState("usd");
-  const [to, setTo] = useState("inr");
-  const [convertedAmount, setConvertedAmount] = useState(0);
+  // getting all the state variables
+  const [amountState, setAmountState] = useState({
+    amount: 0,
+    from: "USD",
+    to: "INR",
+    convertedAmount: 0,
+  });
+  
+ let FromOptions=[]
+
+ let ToOptions = []
+
+  const FromCurr = UseCurrencyInfo(amountState.from);
+  const ToCurr = UseCurrencyInfo(amountState.to);
+
+
+  
+
+      FromOptions = Object.keys(FromCurr)
+      ToOptions = Object.keys(ToCurr)
+
+
+  // setAmountState((state)=>({
+  //   ...state,
+  //   curencyOptionsFrom:FromOptions,
+  //   curencyOptionsTo:ToOptions
+  // }))
 
 
 
-  function useCurrencyInfo(currency) {
-    const [data, setData] = useState({});
-    useEffect(() => {
-      fetch(
-        `https://v6.exchangerate-api.com/v6/ec26f119e5c9e44cc91a7bde/latest/${currency}`
-      )
-        .then((res) => res.json())
-        .then((res) => setData(res.conversion_rates));
-      console.log(data);
-    }, [currency]);
-    console.log(data);
-    return data;
-  }
-
-  const currecyInfo = useCurrencyInfo(from);
-
-  const options = Object.keys(currecyInfo);
-
-  const swap = () => {
-    setFrom(to);
-    setTo(from);
-    setConvertedAmount(amount);
-    setAmount(convertedAmount);
-  };
+  // const swap = () => {
+  //   setFrom(to);
+  //   setTo(from);
+  //   setConvertedAmount(amount);
+  //   setAmount(convertedAmount);
+  // };
 
   const convert = () => {
-    setConvertedAmount(amount * currecyInfo[to]);
+   
+    
+    
+    setAmountState((state) => ({
+      ...state,
+      convertedAmount: amountState.amount * FromCurr[amountState.to],
+    }));
+
+    // setConvertedAmount(amount * currecyInfo[to]);
   };
 
   return (
     <section className="container-fluid ">
       <section className="row main ">
         <section className="col-12 d-flex justify-content-center align-items-center ">
+          {/* main form of the page */}
           <form
             className="components-wrapper   col-5 border  m-auto  p-4 px-6  d-flex flex-column justify-content-center gap-3"
             onSubmit={(e) => {
@@ -51,27 +66,51 @@ function App() {
               convert();
             }}
           >
+            {/*input to enter the amount to convert  */}
             <InputBox
               label="from"
-              amount={amount}
-              currencyOption={options}
-              onCurrencyChange={(currency) => setFrom(currency)}
-              selectCurrency={from}
-              onAmountChange={(amount) => setAmount(amount)}
+              selectCurrency={amountState.selectedCurrencyFrom}
+              amount={amountState.amount}
+              currencyOption={FromOptions}
+              onCurrencyChange={(currency) =>
+                setAmountState((state) => ({
+                  ...state,
+                  from: currency,
+                }))
+              }
+              onAmountChange={(amount) =>
+                setAmountState((state) => ({
+                  ...state,
+                  amount: amount,
+                }))
+              }
             />
-            <button className="swap px-2 py-1 fw-bold fs-5" onClick={swap}>
+            {/* swap button to exchange the values of two inputs */}
+            <button
+              className="swap px-2 py-1 fw-bold fs-5"
+              onClick={() => swap()}
+            >
               SWAP
             </button>
+            {/*input to show the converted amount  */}
+
             <InputBox
               label="To"
-              amount={convertedAmount}
-              currencyOption={options}
-              onCurrencyChange={(currency) => setTo(currency)}
-              selectCurrency={to}
-            />
+              amount={amountState.convertedAmount}
+              selectCurrency={amountState.to}
+              currencyOption={ToOptions}
+              onCurrencyChange={(currency, e) => {
+                console.log(e.target.value);
 
+                setAmountState((state) => ({
+                  ...state,
+                  to: currency,
+                }));
+              }}
+            />
+            {/* button to submit the form that call the convert function */}
             <button className="bg-info py-1 fw-bold fs-4" type="submit">
-            {`Convert ${from.toUpperCase()} to ${to.toUpperCase()}`}
+              {`Convert ${amountState.from} to ${amountState.to}`}
             </button>
           </form>
         </section>

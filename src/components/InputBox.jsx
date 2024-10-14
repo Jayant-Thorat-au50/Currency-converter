@@ -7,7 +7,7 @@ function InputBox({
   onCurrencyChange,
   onAmountChange,
   currencyOption = [],
-  selectCurrency = "usd",
+  selectCurrency,
   amountDisabled = false,
   currencyDisabled = false,
 }) {
@@ -21,7 +21,7 @@ function InputBox({
 
       <div className="d-flex justify-content-between">
         <input
-        className="text-center"
+          className="text-center"
           type="number"
           disabled={amountDisabled}
           value={amount}
