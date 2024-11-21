@@ -52,7 +52,7 @@ function App() {
             <InputBox
               label="from"
               selectCurrency={amountState.selectedCurrencyFrom}
-              amount={amountState.amount}
+              amount={amountState.amount} 
               currencyOption={FromOptions}
               onCurrencyChange={(currency) =>
                 setAmountState((state) => ({
